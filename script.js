@@ -1,8 +1,8 @@
 
 function createGame() {
     let curreentplayer =0 ;
-    const playerOne =[];
-    const playerTwo =[];
+    let playerOne =[];
+    let playerTwo =[];
     let playerOneScore = 0;
     let playerTwoScore = 0;
     let board = gameBoard();
@@ -10,7 +10,7 @@ function createGame() {
     function gameBoard(){
     const board = [];
     for(let i=1;i<=3 ; i++){
-        for (let j=0;j<=3;j++){
+        for (let j=1;j<=3;j++){
             board.push(Number(String(i)+String(j)));
     }}
     return board;
@@ -25,11 +25,11 @@ function createGame() {
     }
 
     function getBoard(){
-        [...board];
+        return [...board];
     }
 
     function getCurrentPlayerArray(){
-        curreentplayer==0? [...playerOne] : [...playerTwo];
+        return curreentplayer==0 ? [...playerOne] : [...playerTwo];
     }
 
     function addToPlayer(tile){
@@ -51,6 +51,9 @@ function createGame() {
         togglePlayer,
         getCurrentPlayerArray,
         addToPlayer,
+        getBoard,
+        updateScore,
+        nextTurn
     };
 
 }
@@ -62,11 +65,11 @@ function playe()
         const squareSlected = Number(square);
         game.addToPlayer(squareSlected);
         const indexofSquareSlected = game.getBoard();
-        console.log(indexofSquareSlected);
         if(checkifWon()){
             game.updateScore();
             game.nextTurn();
         }
+        game.togglePlayer();
     }
     const checkifWon = () =>{
         const playerArray = game.getCurrentPlayerArray();
@@ -77,14 +80,14 @@ function playe()
                                     [13, 22,31] ,
                                     [11, 21,31] , 
                                     [12, 22, 32],
-                                    [13 ,23, 33 ]  
+                                    [13 ,23, 33]  
                                 ];
         for(let i=0 ;i<winningsequence.length ;i++){
             let currentmatched=0 ;
             for(let j=0; j<winningsequence[i].length ;j++){
                 if (playerArray.includes(winningsequence[i][j])){
                     currentmatched++;
-                    if (currentmatched >3){
+                    if (currentmatched>=3){
                         return true;
                     }
                 } 
@@ -92,8 +95,7 @@ function playe()
         }
         return false;
     }
-    console.log(checkifWon());
-    return {playTurn}
+
+    return {playTurn,checkifWon}
 }
 const play = playe();
-console.log(play.playTurn);
